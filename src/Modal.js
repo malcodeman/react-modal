@@ -28,24 +28,32 @@ function Modal(props) {
     ...otherProps
   } = props;
   const ref = React.createRef();
+  const childArray = React.Children.toArray(children);
 
   hooks.useLockBodyScroll(isOpen);
   hooks.useKeyPress("Escape", dismissOnEsc && onClose);
   hooks.useOnClickOutside(ref, dismissOnClickOutside && onClose);
 
-  if (!(mountNode instanceof HTMLElement)) {
+  if (!isOpen) {
     return null;
-  } else if (!isOpen) {
+  } else if (!(mountNode instanceof HTMLElement)) {
+    console.error(
+      `[react-modal] mountNode must be HTML element, got ${typeof mountNode}`
+    );
+    return null;
+  } else if (childArray.length !== 1) {
+    console.error(
+      `[react-modal] Exactly 1 child must be passed to Modal, found ${childArray.length} children`
+    );
     return null;
   }
   return Dom.createPortal(
     <div {...otherProps} style={{ ...style, ...props.style }}>
-      {children &&
-        React.cloneElement(children, {
-          ...children.props,
-          ref,
-          role,
-        })}
+      {React.cloneElement(children, {
+        ...children.props,
+        ref,
+        role,
+      })}
     </div>,
     mountNode
   );
