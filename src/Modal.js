@@ -30,9 +30,21 @@ function Modal(props) {
   const ref = React.createRef();
   const childArray = React.Children.toArray(children);
 
+  function handleDismissOnEsc() {
+    if (dismissOnEsc) {
+      onClose && onClose();
+    }
+  }
+
+  function handleDismissOnClickOutside() {
+    if (dismissOnClickOutside) {
+      onClose && onClose();
+    }
+  }
+
   hooks.useLockBodyScroll(isOpen);
-  hooks.useKeyPress("Escape", dismissOnEsc && onClose);
-  hooks.useOnClickOutside(ref, dismissOnClickOutside && onClose);
+  hooks.useKeyPress("Escape", handleDismissOnEsc);
+  hooks.useOnClickOutside(ref, handleDismissOnClickOutside);
 
   if (!isOpen) {
     return null;
