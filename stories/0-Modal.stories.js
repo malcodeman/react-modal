@@ -1,11 +1,16 @@
 import React from "react";
 import styled from "styled-components";
+import { withKnobs, boolean, select } from "@storybook/addon-knobs";
+import { action } from "@storybook/addon-actions";
+import { withA11y } from "@storybook/addon-a11y";
 
 import { Modal } from "../src";
+import { ROLE } from "../src/constants";
 
 export default {
   title: "Modal",
   component: Modal,
+  decorators: [withKnobs, withA11y],
 };
 
 const Dialog = styled.div`
@@ -63,42 +68,64 @@ const ModalButton = styled(Button)`
   }
 `;
 
-export const Default = () => {
+export function Default() {
   const [isOpen, setIsOpen] = React.useState(false);
+  const dismissOnClickOutside = boolean("Dismiss on click outside", true);
+  const dismissOnEsc = boolean("Dismiss on escape", true);
+  const role = select("Role", Object.values(ROLE), ROLE.dialog);
 
   function onClick() {
     setIsOpen(!isOpen);
+    action("onClick")();
   }
 
   function onClose() {
     setIsOpen(false);
+    action("onClose")();
   }
 
   return (
     <>
       <button onClick={onClick}>Trigger Modal</button>
-      <Modal isOpen={isOpen} onClose={onClose}>
+      <Modal
+        isOpen={isOpen}
+        onClose={onClose}
+        dismissOnClickOutside={dismissOnClickOutside}
+        dismissOnEsc={dismissOnEsc}
+        role={role}
+      >
         <div>Modal</div>
       </Modal>
     </>
   );
-};
+}
 
-export const Styling = () => {
+export function Styling() {
   const [isOpen, setIsOpen] = React.useState(false);
+  const dismissOnClickOutside = boolean("Dismiss on click outside", true);
+  const dismissOnEsc = boolean("Dismiss on escape", true);
+  const role = select("Role", Object.values(ROLE), ROLE.dialog);
 
   function onClick() {
     setIsOpen(!isOpen);
+    action("onClick")();
   }
 
   function onClose() {
     setIsOpen(false);
+    action("onClose")();
   }
 
   return (
     <>
       <button onClick={onClick}>Trigger Modal</button>
-      <Modal isOpen={isOpen} onClose={onClose}>
+      <Modal
+        isOpen={isOpen}
+        onClose={onClose}
+        dismissOnClickOutside={dismissOnClickOutside}
+        dismissOnEsc={dismissOnEsc}
+        role={role}
+      >
         <Dialog>
           <ModalHeader>Hello world</ModalHeader>
           <ModalBody>
@@ -113,4 +140,4 @@ export const Styling = () => {
       </Modal>
     </>
   );
-};
+}
