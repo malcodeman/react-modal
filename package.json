@@ -12,7 +12,8 @@
     "dev": "start-storybook -p 6006",
     "build": "parcel build src/index.js",
     "build-storybook": "build-storybook",
-    "deploy-storybook": "build-storybook && mv storybook-static/index.html storybook-static/200.html && surge storybook-static react-modal-storybook.surge.sh"
+    "deploy-storybook": "build-storybook && mv storybook-static/index.html storybook-static/200.html && surge storybook-static react-modal-storybook.surge.sh",
+    "lint": "eslint src/**"
   },
   "repository": {
     "type": "git",
